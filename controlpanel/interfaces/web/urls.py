@@ -4,6 +4,7 @@ from controlpanel.interfaces.web import auth, data_products
 from controlpanel.interfaces.web.views import (
     DatasourcesCreate,
     DatasourcesList,
+    DatasourcesManage,
     IndexView,
     QuicksightView,
 )
@@ -18,4 +19,5 @@ urlpatterns = [
     path("quicksight/", QuicksightView.as_view(), name="quicksight"),
     path("datasources/", DatasourcesList.as_view(), name="datasources-list"),
     path("datasources/create/", DatasourcesCreate.as_view(), name="datasources-create"),
+    path("datasources/<int:pk>", DatasourcesManage.as_view(), name="datasources-manage"),
 ]

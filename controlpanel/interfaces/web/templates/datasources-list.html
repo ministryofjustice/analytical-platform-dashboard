@@ -4,10 +4,9 @@
 
     <h1 class="govuk-heading-xl">Datasources</h1>
     {% for datasource in datasources %}
-        {{ datasource }}
+        <p><a href="{{ datasource.get_absolute_url }}">Manage {{ datasource.name|title }}</a></p>
     {% endfor %}
 
     <br>
-    <br>
-    <a class="btn" href="{% url 'datasources-create' %}">Create</a>
+    <p><a class="btn" href="{% url 'datasources-create' %}">Create</a></p>
 {% endblock %}

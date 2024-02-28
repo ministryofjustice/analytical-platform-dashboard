@@ -17,3 +17,9 @@ class DatasourceFormView(forms.ModelForm):
         obj.user = self.user
         obj.save()
         return obj
+
+
+class DatasourceQuicksightForm(forms.ModelForm):
+    class Meta:
+        model = Datasource
+        fields = ["is_quicksight_enabled"]

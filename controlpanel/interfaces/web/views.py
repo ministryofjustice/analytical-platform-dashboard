@@ -3,13 +3,13 @@ from typing import Any
 
 from django.http import HttpResponse
 from django.urls import reverse_lazy
-from django.views.generic import FormView, ListView, TemplateView
+from django.views.generic import FormView, ListView, TemplateView, UpdateView
 
 import boto3
 
 from controlpanel.core.models import Datasource, User
 from controlpanel.interfaces.web.auth.mixins import OIDCLoginRequiredMixin
-from controlpanel.interfaces.web.forms import DatasourceFormView
+from controlpanel.interfaces.web.forms import DatasourceFormView, DatasourceQuicksightForm
 
 
 class IndexView(OIDCLoginRequiredMixin, TemplateView):
@@ -75,3 +75,9 @@ class DatasourcesCreate(OIDCLoginRequiredMixin, FormView):
                 },
             )
         return super().form_valid(form)
+
+
+class DatasourcesManage(OIDCLoginRequiredMixin, UpdateView):
+    form_class = DatasourceQuicksightForm
+    template_name = "datasources-manage.html"
+    model = Datasource
