@@ -19,6 +19,14 @@ class IndexView(OIDCLoginRequiredMixin, TemplateView):
                 "users": User.objects.all(),
             }
         )
+        return context
+
+
+class QuicksightView(OIDCLoginRequiredMixin, TemplateView):
+    template_name = "quicksight.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context = super().get_context_data(**kwargs)
         qs = boto3.client("quicksight", region_name="eu-west-1")
         response = qs.generate_embed_url_for_registered_user(
             **{
