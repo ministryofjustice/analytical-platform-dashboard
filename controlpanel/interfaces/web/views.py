@@ -1,6 +1,9 @@
+import os
 from typing import Any
 
 from django.views.generic import TemplateView
+
+import boto3
 
 from controlpanel.core.models import User
 from controlpanel.interfaces.web.auth.mixins import OIDCLoginRequiredMixin
@@ -16,4 +19,14 @@ class IndexView(OIDCLoginRequiredMixin, TemplateView):
                 "users": User.objects.all(),
             }
         )
+        qs = boto3.client("quicksight", region_name="eu-west-1")
+        response = qs.generate_embed_url_for_registered_user(
+            **{
+                "AwsAccountId": os.environ.get("QUICKSIGHT_ACCOUNT_ID"),
+                "UserArn": os.environ.get("QUICKSIGHT_USER_ARN"),
+                "ExperienceConfiguration": {"QuickSightConsole": {"InitialPath": "/start"}},
+            }
+        )
+        context["embed_url"] = response["EmbedUrl"]
+
         return context
