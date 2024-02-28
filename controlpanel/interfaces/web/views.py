@@ -1,12 +1,15 @@
 import os
 from typing import Any
 
-from django.views.generic import TemplateView
+from django.http import HttpResponse
+from django.urls import reverse_lazy
+from django.views.generic import FormView, ListView, TemplateView
 
 import boto3
 
-from controlpanel.core.models import User
+from controlpanel.core.models import Datasource, User
 from controlpanel.interfaces.web.auth.mixins import OIDCLoginRequiredMixin
+from controlpanel.interfaces.web.forms import DatasourceFormView
 
 
 class IndexView(OIDCLoginRequiredMixin, TemplateView):
@@ -36,5 +39,39 @@ class QuicksightView(OIDCLoginRequiredMixin, TemplateView):
             }
         )
         context["embed_url"] = response["EmbedUrl"]
-
         return context
+
+
+class DatasourcesList(OIDCLoginRequiredMixin, ListView):
+    template_name = "datasources-list.html"
+    model = Datasource
+    context_object_name = "datasources"
+
+
+class DatasourcesCreate(OIDCLoginRequiredMixin, FormView):
+    template_name = "datasources.html"
+    form_class = DatasourceFormView
+    success_url = reverse_lazy("datasources-list")
+
+    def get_form_kwargs(self) -> dict[str, Any]:
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.request.user
+        return kwargs
+
+    def form_valid(self, form: Any) -> HttpResponse:
+        obj = form.save()
+        if False:
+            s3 = boto3.client(
+                "s3",
+                region_name="eu-west-1",
+                aws_access_key_id=os.environ.get("DATA_ACCESS_KEY"),
+                aws_secret_access_key=os.environ.get("DATA_SECRET_KEY"),
+                aws_session_token=os.environ.get("DATA_SESSION_TOKEN"),
+            )
+            s3.create_bucket(
+                Bucket=obj.name,
+                CreateBucketConfiguration={
+                    "LocationConstraint": "eu-west-1",
+                },
+            )
+        return super().form_valid(form)

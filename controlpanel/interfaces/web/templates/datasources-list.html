@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1 class="govuk-heading-xl">Datasources</h1>
+    {% for datasource in datasources %}
+        {{ datasource }}
+    {% endfor %}
+
+    <br>
+    <br>
+    <a class="btn" href="{% url 'datasources-create' %}">Create</a>
+{% endblock %}

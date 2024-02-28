@@ -3,9 +3,15 @@ from django.urls import reverse
 
 def nav_items(request):
     quicksight_url = reverse("quicksight")
+    datasources_url = reverse("datasources-list")
     return {
         "nav_items": [
             {"name": "Home", "url": "/", "active": request.get_full_path() == "/"},
+            {
+                "name": "Datasources",
+                "url": datasources_url,
+                "active": request.get_full_path() == datasources_url,
+            },
             {
                 "name": "Quicksight",
                 "url": quicksight_url,
