@@ -87,6 +87,7 @@ class DatasourcesManage(OIDCLoginRequiredMixin, UpdateView):
     def form_valid(self, form: DatasourceQuicksightForm) -> HttpResponse:
         redirect = super().form_valid(form)
         if self.object.is_quicksight_enabled:
+            # TODO would need to get or create policy first
             qs = boto3.client("quicksight", region_name="eu-west-1")
             qs.create_iam_policy_assignment(
                 AwsAccountId=os.environ.get("QUICKSIGHT_ACCOUNT_ID"),

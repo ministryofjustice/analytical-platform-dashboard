@@ -23,3 +23,4 @@ class DatasourceQuicksightForm(forms.ModelForm):
     class Meta:
         model = Datasource
         fields = ["is_quicksight_enabled"]
+        labels = {"is_quicksight_enabled": "Enabled for use in Quicksight"}
