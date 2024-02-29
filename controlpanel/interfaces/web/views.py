@@ -60,7 +60,8 @@ class DatasourcesCreate(OIDCLoginRequiredMixin, FormView):
 
     def form_valid(self, form: Any) -> HttpResponse:
         obj = form.save()
-        if False:
+        create_bucket = False
+        if create_bucket:
             s3 = boto3.client(
                 "s3",
                 region_name="eu-west-1",
@@ -81,3 +82,25 @@ class DatasourcesManage(OIDCLoginRequiredMixin, UpdateView):
     form_class = DatasourceQuicksightForm
     template_name = "datasources-manage.html"
     model = Datasource
+    success_url = reverse_lazy("datasources-list")
+
+    def form_valid(self, form: DatasourceQuicksightForm) -> HttpResponse:
+        redirect = super().form_valid(form)
+        if self.object.is_quicksight_enabled:
+            qs = boto3.client("quicksight", region_name="eu-west-1")
+            qs.create_iam_policy_assignment(
+                AwsAccountId=os.environ.get("QUICKSIGHT_ACCOUNT_ID"),
+                AssignmentName="michael-test-1",
+                AssignmentStatus="ENABLED",
+                PolicyArn=os.environ.get("QUICKSIGHT_POLICY_ARN"),
+                Identities={"User": ["dev_user_michaeljcollinsuk/michaeljcollinsuk"]},
+                Namespace="default",
+            )
+        else:
+            qs = boto3.client("quicksight", region_name="eu-west-1")
+            qs.delete_iam_policy_assignment(
+                AwsAccountId=os.environ.get("QUICKSIGHT_ACCOUNT_ID"),
+                AssignmentName="michael-test-1",
+                Namespace="default",
+            )
+        return redirect
