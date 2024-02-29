@@ -3,10 +3,24 @@
 {% block content %}
 
     <h1 class="govuk-heading-xl">Datasources</h1>
-    {% for datasource in datasources %}
-        <p><a href="{{ datasource.get_absolute_url }}">Manage {{ datasource.name|title }}</a></p>
-    {% endfor %}
+    <table class="govuk-table">
+        <thead class="govuk-table__head">
+            <tr class="govuk-table__row">
+                <th scope="col" class="govuk-table__header">Name</th>
+                <th scope="col" class="govuk-table__header">Owner</th>
+            </tr>
+        </thead>
+        <tbody class="govuk-table__body">
+            {% for datasource in datasources %}
+            <tr class="govuk-table__row">
+                <td class="govuk-table__cell"><a href="{{ datasource.get_absolute_url }}">{{ datasource.name }}</a></p></td>
+                <td class="govuk-table__cell"><a href="{{ datasource.get_absolute_url }}">{{ request.user.email }}</a></p></td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
 
     <br>
-    <p><a class="btn" href="{% url 'datasources-create' %}">Create</a></p>
+    <p><a class="govuk-button" href="{% url 'datasources-create' %}">Create</a></p>
 {% endblock %}
