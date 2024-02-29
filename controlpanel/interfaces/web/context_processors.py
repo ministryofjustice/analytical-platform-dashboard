@@ -10,7 +10,7 @@ def nav_items(request):
             {
                 "name": "Datasources",
                 "url": datasources_url,
-                "active": request.get_full_path() == datasources_url,
+                "active": datasources_url in request.get_full_path(),
             },
             {
                 "name": "Quicksight",
