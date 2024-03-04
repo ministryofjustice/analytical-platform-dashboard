@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="govuk-form-group">
+            <h1 class="govuk-label-wrapper">
+                <label class="govuk-label govuk-label--l" for="{{ form.name.id_for_label }}">
+                    Datasource name
+                </label>
+            </h1>
+            <input class="govuk-input" id="{{ form.name.id_for_label }}" name="{{ form.name.name }}" type="text">
+        </div>
+        <button type="submit" class="govuk-button" data-module="govuk-button">Save</button>
+    </form>
+
+{% endblock content %}

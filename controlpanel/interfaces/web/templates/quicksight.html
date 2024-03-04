@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <body onload="embedConsole()">
+        <h1 class="govuk-heading-xl">{{ page_title }}</h1>
+        <div id="experience-container"></div>
+    </body>
+
+{% endblock content %}
+
+{% block body_end %}
+    {{ block.super }}
+    <script src="https://unpkg.com/amazon-quicksight-embedding-sdk@2.6.0/dist/quicksight-embedding-js-sdk.min.js"></script>
+    <script type="text/javascript">
+        const embedConsole = async() => {
+            const {
+                createEmbeddingContext,
+            } = QuickSightEmbedding;
+
+            const embeddingContext = await createEmbeddingContext({
+                onChange: (changeEvent, metadata) => {
+                    console.log('Context received a change', changeEvent, metadata);
+                },
+            });
+
+            const frameOptions = {
+                url: "{{ embed_url|safe }}", // replace this value with the url generated via embedding API
+                container: '#experience-container',
+                height: "700px",
+                width: "1000px",
+                onChange: (changeEvent, metadata) => {
+                    switch (changeEvent.eventName) {
+                        case 'FRAME_MOUNTED': {
+                            console.log("Do something when the experience frame is mounted.");
+                            break;
+                        }
+                        case 'FRAME_LOADED': {
+                            console.log("Do something when the experience frame is loaded.");
+                            break;
+                        }
+                    }
+                },
+            };
+
+            const contentOptions = {
+                onMessage: async (messageEvent, experienceMetadata) => {
+                    switch (messageEvent.eventName) {
+                        case 'ERROR_OCCURRED': {
+                            console.log("Do something when the embedded experience fails loading.");
+                            break;
+                        }
+                    }
+                }
+            };
+            const embeddedConsoleExperience = await embeddingContext.embedConsole(frameOptions, contentOptions);
+        };
+    </script>
+{% endblock body_end %}

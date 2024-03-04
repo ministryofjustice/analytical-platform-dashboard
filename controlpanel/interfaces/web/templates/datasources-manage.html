@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <h1 class="govuk-heading-xl">Manage datasource</h1>
+    <h2 class="govuk-heading-m">{{ form.instance.name }}</h2>
+
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="govuk-form-group">
+            <fieldset class="govuk-fieldset" aria-describedby="manage-datasource">
+            <div id="manage-datasource" class="govuk-hint">
+                Access settings
+            </div>
+            <div class="govuk-checkboxes" data-module="govuk-checkboxes">
+                <div class="govuk-checkboxes__item">
+                <input class="govuk-checkboxes__input" id="{{ form.is_quicksight_enabled.id_for_label }}" name="{{ form.is_quicksight_enabled.name }}" type="checkbox" {% if form.instance.is_quicksight_enabled %}checked{% endif%}>
+                <label class="govuk-label govuk-checkboxes__label" for="{{ form.is_quicksight_enabled.id_for_label }}">
+                    {{ form.is_quicksight_enabled.label }}
+                </label>
+                </div>
+                </div>
+            </fieldset>
+        </div>
+        <button type="submit" class="govuk-button" data-module="govuk-button">Save</button>
+    </form>
+
+{% endblock content %}
