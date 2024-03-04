@@ -94,7 +94,7 @@ class DatasourcesManage(OIDCLoginRequiredMixin, UpdateView):
                 AssignmentName="michael-test-1",
                 AssignmentStatus="ENABLED",
                 PolicyArn=os.environ.get("QUICKSIGHT_POLICY_ARN"),
-                Identities={"User": ["dev_user_michaeljcollinsuk/michaeljcollinsuk"]},
+                Identities={"User": [os.environ.get("QUICKSIGHT_USERNAME")]},
                 Namespace="default",
             )
         else:
