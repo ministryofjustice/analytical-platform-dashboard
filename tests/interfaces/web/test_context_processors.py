@@ -14,7 +14,7 @@ class TestContextProcessors:
 
     def test_nav_items(self, request_obj):
         home = {"name": "Home", "url": "/", "active": True}
-        data_products = {"name": "Data Products", "url": reverse("data-products"), "active": False}
+        data_products = {"name": "Quicksight", "url": reverse("quicksight"), "active": False}
         assert nav_items(request=request_obj) == {"nav_items": [home, data_products]}
 
     def test_header_context(self, request_obj):

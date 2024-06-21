@@ -13,6 +13,7 @@ oauth.register(
     "azure",
     client_id=settings.AUTHLIB_OAUTH_CLIENTS["azure"]["client_id"],
     # client_secret is not needed for PKCE flow
+    # TODO add this in?
     server_metadata_url=settings.AUTHLIB_OAUTH_CLIENTS["azure"]["server_metadata_url"],
     client_kwargs=settings.AUTHLIB_OAUTH_CLIENTS["azure"]["client_kwargs"],
 )

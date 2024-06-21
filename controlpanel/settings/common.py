@@ -218,7 +218,6 @@ AZURE_OP_CONF_URL = (
 )
 AZURE_LOGOUT_URL = f"https://login.microsoftonline.com/{AZURE_TENANT_ID}/oauth2/v2.0/logout"
 AZURE_CODE_CHALLENGE_METHOD = os.environ.get("AZURE_CODE_CHALLENGE_METHOD", "S256")
-
 AUTHLIB_OAUTH_CLIENTS = {
     "azure": {
         "client_id": AZURE_CLIENT_ID,

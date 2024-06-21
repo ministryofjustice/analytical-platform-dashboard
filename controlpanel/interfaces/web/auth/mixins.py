@@ -10,7 +10,7 @@ class OIDCLoginRequiredMixin(LoginRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect(reverse("login"))
+            return redirect(reverse("login-prompt"))
         if OIDCSessionValidator(request).expired():
-            return redirect(reverse("login"))
+            return redirect(reverse("login-prompt"))
         return super().dispatch(request, *args, **kwargs)

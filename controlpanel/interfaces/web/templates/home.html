@@ -3,6 +3,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+<h1 class="govuk-heading-xl">Welcome</h1>
 
 {% if user.is_authenticated %}
 <pre>
@@ -11,12 +12,7 @@
 {{ user.user_id }}
 </pre>
 
-<h1 class="govuk-heading-xl">User list</h1>
-{% for user in users %}
-    <li>{{ user.name }}: {{ user.nickname }}, {{ user.email }} </li>
-{% endfor %}
 <hr>
-<a href="{% url 'logout' %}">logout</a>
 <br/>
 {% else %}
 <a href="{% url 'login' %}">login</a>

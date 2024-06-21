@@ -2,25 +2,27 @@ from django.urls import reverse
 
 
 def nav_items(request):
-    data_products_url = reverse("data-products")
+    if not request.user.is_authenticated:
+        return {}
+    quicksight_url = reverse("quicksight")
     return {
         "nav_items": [
             {"name": "Home", "url": "/", "active": request.get_full_path() == "/"},
             {
-                "name": "Data Products",
-                "url": data_products_url,
-                "active": request.get_full_path() == data_products_url,
+                "name": "Quicksight",
+                "url": quicksight_url,
+                "active": request.get_full_path() == quicksight_url,
             },
         ]
     }
 
 
 def header_context(request):
-    is_logged_in = request.user.is_authenticated
+    is_logged_in = request.user and request.user.is_authenticated
     return {
         "header_nav_items": [
             {
-                "name": request.user.name,
+                "name": request.user.name if is_logged_in else "",
                 "url": "",
             },
             {
