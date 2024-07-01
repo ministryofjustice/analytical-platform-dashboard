@@ -9,7 +9,7 @@ govuk-frontend-django==0.9.1
 gunicorn==22.0.0
 iniconfig==2.0.0
 josepy==1.14.0
-model-bakery==1.17.0
+model-bakery==1.18.2
 psycopg2==2.9.9
 pyOpenSSL==24.1.0
 pytest==8.0.0
