@@ -7,10 +7,10 @@ npm install --global npm@latest
 docker compose --file contrib/docker-compose-postgres.yml up --detach
 
 # Upgrade Pip
-pip install --upgrade pip
+pip install --break-system-package --upgrade pip
 
 # Install dependencies
-pip install -r requirements.dev.txt
+pip install --break-system-package --requirement requirements.dev.txt
 
 # install npm dependencies and static assets
 npm install

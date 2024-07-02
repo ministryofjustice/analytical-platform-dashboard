@@ -4,12 +4,13 @@ name: Release
 on:
   push:
     tags:
-      - '*.*.*'
+      - "*"
 
 permissions: {}
 
 jobs:
-  release:
+  release-image:
+    name: Release Image
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -21,34 +22,68 @@ jobs:
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
 
       - name: Install cosign
-        id: install-cosign
+        id: install_cosign
         uses: sigstore/cosign-installer@59acb6260d9c0ba8f4a2f9d9b48431a222b68e20 # v3.5.0
 
-      - name: Login to GitHub Container Registry
-        id: login
+      - name: Log in to GitHub Container Registry
+        id: login_ghcr
         uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push
-        id: push
+      - name: Build and Push
+        id: build_and_push
         uses: docker/build-push-action@15560696de535e4014efeff63c48f16952e52dd1 # v6.2.0
         with:
-          context: .
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/analytical-platform-ui:${{ github.ref_name }}
+          tags: ghcr.io/${{ github.repository }}:${{ github.ref_name }}
 
       - name: Sign
         id: sign
+        shell: bash
         run: |
-          cosign sign --yes ghcr.io/${{ github.repository_owner }}/analytical-platform-ui@${{ steps.push.outputs.digest }}
+          cosign sign --yes ghcr.io/${{ github.repository }}@${{ steps.build_and_push.outputs.digest }}
 
       - name: Verify
         id: verify
         run: |
           cosign verify \
-          --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
-          --certificate-identity=https://github.com/${{ github.repository_owner }}/analytical-platform-ui/.github/workflows/release.yml@refs/tags/${{ github.ref_name }} \
-          ghcr.io/${{ github.repository_owner }}/analytical-platform-ui@${{ steps.push.outputs.digest }}
+            --certificate-oidc-issuer=https://token.actions.githubusercontent.com \
+            --certificate-identity=https://github.com/${{ github.repository }}/.github/workflows/release.yml@refs/tags/${{ github.ref_name }} \
+            ghcr.io/${{ github.repository }}@${{ steps.build_and_push.outputs.digest }}
+
+  release-chart:
+    name: Release Chart
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Checkout
+        id: checkout
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+
+      - name: Set Up Helm
+        id: setup_helm
+        uses: azure/setup-helm@fe7b79cd5ee1e45176fcad797de68ecaf3ca4814 # v4.2.0
+
+      - name: Log in to GitHub Container Registry
+        id: login_ghcr
+        uses: docker/login-action@0d4c9c5ea7693da7b068278f7b52bda2a190a446 # v3.2.0
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Package Chart
+        id: package_chart
+        run: |
+          helm package chart --destination .helm-deploy
+
+      - name: Push Chart
+        id: push_chart
+        run: |
+          helm push .helm-deploy/analytical-platform-ui-${{ github.ref_name }}.tgz oci://ghcr.io/ministryofjustice/analytical-platform-charts

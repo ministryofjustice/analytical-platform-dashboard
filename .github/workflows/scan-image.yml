@@ -26,13 +26,13 @@ jobs:
         with:
           push: false
           load: true
-          tags: dashboard
+          tags: ui
 
       - name: Scan Image
         id: scan_image
         uses: aquasecurity/trivy-action@7c2007bcb556501da015201bcba5aa14069b74e2 # v0.23.0
         with:
-          image-ref: dashboard
+          image-ref: ui
           exit-code: 1
           format: sarif
           output: trivy-results.sarif
@@ -44,7 +44,7 @@ jobs:
         id: scan_image_on_failure
         uses: aquasecurity/trivy-action@7c2007bcb556501da015201bcba5aa14069b74e2 # v0.23.0
         with:
-          image-ref: dashboard
+          image-ref: ui
           exit-code: 1
           format: table
           severity: CRITICAL

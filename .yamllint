@@ -7,3 +7,7 @@ rules:
     level: warning
     allow-non-breakable-inline-mappings: true
   truthy: disable
+
+ignore:
+  - '**/chart/templates/*.yaml'
+  - '**/chart/templates/tests/*.yaml'

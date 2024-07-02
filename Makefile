@@ -35,3 +35,6 @@ test: container
 	@echo
 	@echo "> Running Python Tests (In Docker)..."
 	IMAGE_TAG=ap docker compose --file=contrib/docker-compose-test.yml run --rm interfaces
+
+ct:
+	ct lint --charts chart

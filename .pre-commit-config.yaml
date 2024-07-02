@@ -7,8 +7,6 @@ repos:
         id: end-of-file-fixer
       - name: Trailing Whitespace Fixer
         id: trailing-whitespace
-      - name: Check yaml
-        id: check-yaml
       - name: requirements.txt fixer
         id: requirements-txt-fixer
 

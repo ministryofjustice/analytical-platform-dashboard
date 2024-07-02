@@ -4,10 +4,14 @@ name: Enforce Version Pinning
 
 on:
   pull_request:
-    branches: [main]
+    branches:
+      - main
+
+permissions: {}
 
 jobs:
-  check-version-pinning:
+  enforce-version-pinning:
+    name: Enforce Version Pinning
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code

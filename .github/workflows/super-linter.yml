@@ -40,3 +40,4 @@ jobs:
           PYTHON_FLAKE8_CONFIG_FILE: .flake8
           PYTHON_ISORT_CONFIG_FILE: pyproject.toml
           PYTHON_MYPY_CONFIG_FILE: mypy.ini
+          VALIDATE_KUBERNETES_KUBECONFORM: false # Super-Linter doesn't support https://github.com/jtyr/kubeconform-helm

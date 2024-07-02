@@ -1,0 +1,11 @@
+---
+apiVersion: v2
+name: analytical-platform-ui
+description: Analytical Platform UI
+type: application
+version: 0.0.1
+appVersion: 0.0.1
+icon: https://upload.wikimedia.org/wikipedia/en/thumb/4/4a/Ministry_of_Justice_logo_%28United_Kingdom%29.svg/611px-Ministry_of_Justice_logo_%28United_Kingdom%29.svg.png
+maintainers:
+  - name: moj-data-platform-robot
+    email: analytical-platform@digital.justice.gov.uk

@@ -10,7 +10,10 @@
     },
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "./features/src/postgresql": {},
-    "ghcr.io/ministryofjustice/devcontainer-feature/aws:0": {}
+    "ghcr.io/ministryofjustice/devcontainer-feature/aws:1": {},
+    "ghcr.io/ministryofjustice/devcontainer-feature/container-structure-test:1": {},
+    "ghcr.io/ministryofjustice/devcontainer-feature/kubernetes:1": {},
+    "ghcr.io/ministryofjustice/devcontainer-feature/static-analysis:1": {}
   },
   "postCreateCommand": "bash scripts/devcontainer/post-create.sh",
   "postStartCommand": "bash scripts/devcontainer/post-start.sh",
@@ -20,7 +23,8 @@
       "extensions": [
         "EditorConfig.EditorConfig",
         "GitHub.vscode-github-actions",
-        "GitHub.vscode-codeql"
+        "GitHub.vscode-codeql",
+        "ms-vsliveshare.vsliveshare"
       ]
     }
   }
